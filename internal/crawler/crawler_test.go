@@ -1,6 +1,7 @@
 package crawler
 
 import (
+	"context"
 	"errors"
 	"testing"
 
@@ -88,7 +89,7 @@ func TestCrawler_Crawl(t *testing.T) {
 
 		c := NewCrawler(&successExtractorMock{})
 		c.SetURLExtractor(&successURLExtractorMock{})
-		actual, err := c.Crawl("https://example.com")
+		actual, err := c.Crawl(context.Background(), "https://example.com")
 		assert.NoError(t, err)
 		assert.EqualValues(t, []Site{
 			{
@@ -103,7 +104,7 @@ func TestCrawler_Crawl(t *testing.T) {
 		t.Parallel()
 
 		c := NewCrawler(&errorExtractorMock{})
-		actual, err := c.Crawl("https://example.com")
+		actual, err := c.Crawl(context.Background(), "https://example.com")
 		assert.Error(t, err)
 		assert.Nil(t, actual)
 	})
@@ -113,7 +114,7 @@ func TestCrawler_Crawl(t *testing.T) {
 
 		c := NewCrawler(&successExtractorMock{})
 		c.SetURLExtractor(&errorURLExtractorMock{})
-		actual, err := c.Crawl("https://example.com")
+		actual, err := c.Crawl(context.Background(), "https://example.com")
 		assert.Error(t, err)
 		assert.Nil(t, actual)
 	})
