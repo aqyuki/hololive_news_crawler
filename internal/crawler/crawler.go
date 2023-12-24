@@ -1,8 +1,12 @@
 package crawler
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"log/slog"
+
+	"github.com/aqyuki/hololive_news_crawler/pkg/logging"
 )
 
 var (
@@ -28,30 +32,29 @@ func (c *Crawler) SetURLExtractor(ext URLExtractor) error {
 }
 
 // Crawl crawl the web site
-func (c *Crawler) Crawl(url string) ([]Site, error) {
+func (c *Crawler) Crawl(ctx context.Context, url string) ([]Site, error) {
 
+	// logger is a logger from context
+	var logger *slog.Logger = logging.FromContext(ctx)
 	// targetURLs is a slice of URLs which are target of crawling
 	var targetURLs []string
 	// collected is a slice of collected web sites
 	var collected = make([]Site, 0)
 
-	// FIXME: change to logger
-	fmt.Printf("try to collect urls from %s\n", url)
+	logger.Info("try to collect urls", slog.String("start_url", url))
 	targetURLs, err := c.urlExtractor.ExtractURLs(url)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create url list : %w", err)
 	}
-	// FIXME: change to logger
-	fmt.Printf("finish collecting urls from %s\n", url)
-	fmt.Printf("%d urls are collected\n", len(targetURLs))
 
+	logger.Info("urls are collected")
+	logger.Info(fmt.Sprintf("%d urls are collected", len(targetURLs)))
 	for _, target := range targetURLs {
 		site, err := c.extractor.Scrape(target)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scrape : %w", err)
 		}
-		// FIXME: change to logger
-		fmt.Printf("scraped : %s\n", site.URL)
+		logger.Info("scraped", slog.String("url", target))
 		collected = append(collected, *site)
 	}
 
