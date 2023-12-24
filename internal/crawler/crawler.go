@@ -35,16 +35,23 @@ func (c *Crawler) Crawl(url string) ([]Site, error) {
 	// collected is a slice of collected web sites
 	var collected = make([]Site, 0)
 
+	// FIXME: change to logger
+	fmt.Printf("try to collect urls from %s\n", url)
 	targetURLs, err := c.urlExtractor.ExtractURLs(url)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create url list : %w", err)
 	}
+	// FIXME: change to logger
+	fmt.Printf("finish collecting urls from %s\n", url)
+	fmt.Printf("%d urls are collected\n", len(targetURLs))
 
 	for _, target := range targetURLs {
 		site, err := c.extractor.Scrape(target)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scrape : %w", err)
 		}
+		// FIXME: change to logger
+		fmt.Printf("scraped : %s\n", site.URL)
 		collected = append(collected, *site)
 	}
 
