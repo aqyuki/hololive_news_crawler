@@ -6,6 +6,7 @@ require (
 	github.com/gocolly/colly v1.2.0
 	github.com/m-mizutani/clog v0.0.4
 	github.com/stretchr/testify v1.8.4
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -33,5 +34,4 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.26.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

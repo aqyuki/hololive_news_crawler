@@ -3,11 +3,11 @@ package crawler
 // Site holds the data of the web site
 type Site struct {
 	// URL is the URL of the web site
-	URL string
+	URL string `json:"url" yaml:"url"`
 	// TItle is the title of the web site
-	Title string
+	Title string `json:"title" yaml:"title"`
 	// Description is the description of the web site
-	Description string
+	Description string `json:"description" yaml:"description"`
 }
 
 // NewSite creates a new Site
